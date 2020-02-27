@@ -10,6 +10,9 @@ namespace Todo.Domain.Handlers
     public class TodoHandler :
         Notifiable
       , IHandler<CreateTodoCommand>
+      , IHandler<UpdateToDoCommand>
+      , IHandler<MarkTodoAsDoneCommand>
+      , IHandler<MarkToDoAsUndoneCommand>
     {
         private readonly ITodoRepository  _repository;
 
@@ -36,6 +39,50 @@ namespace Todo.Domain.Handlers
                     
         }
 
-      
+        public ICommandResult Handler(UpdateToDoCommand command)
+        {
+            command.Validate();
+            if(command.Invalid)
+                return new GenericCommandResult(false, "ops, parece que sua tarefa esta errada", command.Notifications);
+
+            var todo = _repository.GetById(command.Id, command.User);
+
+            todo.UpdateTitle(command.Title);
+
+            _repository.Update(todo);
+
+            return new GenericCommandResult(true, "Salvo com sucesso", todo.Id);
+        }
+
+        public ICommandResult Handler(MarkTodoAsDoneCommand command)
+        {
+           command.Validate();
+           if(command.Invalid)
+            return new GenericCommandResult(false, "ops, tem algo errado ai", command.Notifications);
+
+            //reidtratar o obj, necessario por conta do EF
+            var todo = _repository.GetById(command.Id, command.User);
+
+            todo.MarkAsDone();
+
+            _repository.Update(todo);
+
+            return new GenericCommandResult(true, "DONE!", command.Id);
+        }
+
+        public ICommandResult Handler(MarkToDoAsUndoneCommand command)
+        {
+            command.Validate();
+           if(command.Invalid)
+            return new GenericCommandResult(false, "ops, tem algo errado ai", command.Notifications);
+
+            var todo = _repository.GetById(command.Id, command.User);
+
+            todo.MarkAsUnDone();
+
+            _repository.Update(todo);
+
+            return new GenericCommandResult(true, "DONE!", command.Id);
+        }
     }
 }

@@ -21,11 +21,11 @@ namespace Todo.Domain.Entities
         public string User { get; private set; }
 
 
-        public void MakeAsDone(){
+        public void MarkAsDone(){
             Done = true;
         }
 
-        public void MakeasUnDone(){
+        public void MarkAsUnDone(){
             Done = false;
         }
 
