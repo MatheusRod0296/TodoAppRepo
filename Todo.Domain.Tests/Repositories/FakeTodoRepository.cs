@@ -6,17 +6,17 @@ namespace Todo.Domain.Tests.Repositories
 {
     public class FakeTodoRepository : ITodoRepository
     {
-        public void Create(Todoitem todo)
+        public void Create(TodoItem todo)
         {
            
         }
 
-        public Todoitem GetById(Guid id, string user)
+        public TodoItem GetById(Guid id, string user)
         {
-            return new Todoitem("", DateTime.Now, "");
+            return new TodoItem("", DateTime.Now, "");
         }
 
-        public void Update(Todoitem todo)
+        public void Update(TodoItem todo)
         {
             
         }

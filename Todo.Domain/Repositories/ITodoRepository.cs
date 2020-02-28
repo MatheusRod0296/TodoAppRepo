@@ -5,10 +5,10 @@ namespace Todo.Domain.Repositories
 {
     public interface ITodoRepository
     {
-         void Create(Todoitem todo);
-         void Update(Todoitem todo);
+         void Create(TodoItem todo);
+         void Update(TodoItem todo);
 
-         Todoitem GetById(Guid id, string user);
+         TodoItem GetById(Guid id, string user);
       
     }
 }

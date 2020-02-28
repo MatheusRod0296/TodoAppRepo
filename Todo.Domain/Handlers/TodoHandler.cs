@@ -29,7 +29,7 @@ namespace Todo.Domain.Handlers
                 return new GenericCommandResult(false, "Ops, parece que sua terefa esta errada!", command.Notifications);
 
             //Geara o Todo
-            var todo = new Todoitem(command.Title,  command.Date, command.User);
+            var todo = new TodoItem(command.Title,  command.Date, command.User);
 
             //salva no banco
             _repository.Create(todo);
