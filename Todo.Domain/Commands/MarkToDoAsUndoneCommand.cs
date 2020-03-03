@@ -15,7 +15,7 @@ namespace Todo.Domain.Commands
             AddNotifications(
                 new Contract()
                 .Requires()
-                .HasLen(Id.ToString(), 16, "id", "id invalido")
+                .HasLen(Id.ToString(), 36, "id", "id invalido")
                 .HasMinLen(User, 6, "user", "Usuario invalido")
                 
                 
