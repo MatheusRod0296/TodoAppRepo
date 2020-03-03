@@ -9,4 +9,12 @@
     <ProjectReference Include="..\Todo.Domain.Infra\Todo.Domain.Infra.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.1.2">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="microsoft.entityFrameworkCore.InMemory" Version="3.1.2" />
+  </ItemGroup>
+
 </Project>
