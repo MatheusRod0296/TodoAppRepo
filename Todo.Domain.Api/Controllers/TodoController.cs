@@ -1,6 +1,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Todo.Domain.Commands;
 using Todo.Domain.Entities;
@@ -11,6 +13,7 @@ namespace Todo.Domain.Api.Controllers
 {
     [ApiController]
     [Route("v1/Todos")]
+    [Authorize]
     public class TodoController : ControllerBase
     {
         [Route("")]
@@ -18,7 +21,8 @@ namespace Todo.Domain.Api.Controllers
         public GenericCommandResult Create([FromBody] CreateTodoCommand commad, [FromServices]TodoHandler handler)
         {
 
-            commad.User = "Matheus";
+            commad.User = User.Claims.FirstOrDefault( x => x.Type == "user_id" )?.Value;
+
             return (GenericCommandResult)handler.Handler(commad);
         }
 
@@ -27,7 +31,7 @@ namespace Todo.Domain.Api.Controllers
         public GenericCommandResult Update([FromBody] UpdateToDoCommand commad, [FromServices]TodoHandler handler)
         {
 
-            commad.User = "Matheus";
+            commad.User = User.Claims.FirstOrDefault( x => x.Type == "user_id" )?.Value;;
             return (GenericCommandResult)handler.Handler(commad);
         }
 
@@ -36,7 +40,7 @@ namespace Todo.Domain.Api.Controllers
         public GenericCommandResult Update([FromBody] MarkTodoAsDoneCommand commad, [FromServices]TodoHandler handler)
         {
 
-            commad.User = "Matheus";
+            commad.User = User.Claims.FirstOrDefault( x => x.Type == "user_id" )?.Value;;
             return (GenericCommandResult)handler.Handler(commad);
         }
 
@@ -45,7 +49,7 @@ namespace Todo.Domain.Api.Controllers
         public GenericCommandResult Update([FromBody] MarkToDoAsUndoneCommand commad, [FromServices]TodoHandler handler)
         {
 
-            commad.User = "Matheus";
+            commad.User = User.Claims.FirstOrDefault( x => x.Type == "user_id" )?.Value;;
             return (GenericCommandResult)handler.Handler(commad);
         }
 
@@ -53,7 +57,8 @@ namespace Todo.Domain.Api.Controllers
         [HttpGet]
         public IEnumerable<TodoItem> GetAll([FromServices]ITodoRepository repository)
         {
-            return repository.GetAll("Matheus");
+            var user = User.Claims.FirstOrDefault( x => x.Type == "user_id" )?.Value;
+            return repository.GetAll(user);
         }
 
         
@@ -62,42 +67,48 @@ namespace Todo.Domain.Api.Controllers
         [HttpGet]
         public IEnumerable<TodoItem> GetAllDone([FromServices]ITodoRepository repository)
         {
-            return repository.GetAllDone("Matheus");
+             var user = User.Claims.FirstOrDefault( x => x.Type == "user_id" )?.Value;
+            return repository.GetAllDone(user);
         }
 
         [Route("undone")]
         [HttpGet]
         public IEnumerable<TodoItem> GetAllUnDone([FromServices]ITodoRepository repository)
         {
-            return repository.GetAllUndone("Matheus");
+             var user = User.Claims.FirstOrDefault( x => x.Type == "user_id" )?.Value;
+            return repository.GetAllUndone(user);
         }
 
         [Route("done/today")]
         [HttpGet]
         public IEnumerable<TodoItem> GetAllDoneToday([FromServices]ITodoRepository repository)
         {
-            return repository.GetAllByPeriod("Matheus", DateTime.Now.Date, true);
+             var user = User.Claims.FirstOrDefault( x => x.Type == "user_id" )?.Value;
+            return repository.GetAllByPeriod(user, DateTime.Now.Date, true);
         }
 
          [Route("undone/today")]
         [HttpGet]
         public IEnumerable<TodoItem> GetAllUnDoneToday([FromServices]ITodoRepository repository)
         {
-            return repository.GetAllByPeriod("Matheus", DateTime.Now.Date, false);
+             var user = User.Claims.FirstOrDefault( x => x.Type == "user_id" )?.Value;
+            return repository.GetAllByPeriod(user, DateTime.Now.Date, false);
         }
 
         [Route("done/tomorrow")]
         [HttpGet]
         public IEnumerable<TodoItem> GetAllDoneTomorrow([FromServices]ITodoRepository repository)
         {
-            return repository.GetAllByPeriod("Matheus", DateTime.Now.Date.AddDays(1), true);
+             var user = User.Claims.FirstOrDefault( x => x.Type == "user_id" )?.Value;
+            return repository.GetAllByPeriod(user, DateTime.Now.Date.AddDays(1), true);
         }
 
          [Route("uddone/tomorrow")]
         [HttpGet]
         public IEnumerable<TodoItem> GetAllUnDoneTomorrow([FromServices]ITodoRepository repository)
         {
-            return repository.GetAllByPeriod("Matheus", DateTime.Now.Date.AddDays(1), false);
+             var user = User.Claims.FirstOrDefault( x => x.Type == "user_id" )?.Value;
+            return repository.GetAllByPeriod(user, DateTime.Now.Date.AddDays(1), false);
         }
 
     }
